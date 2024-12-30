@@ -1,101 +1,120 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import dictionary from '../../public/ipa_dictionary.json';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [inputWord, setInputWord] = useState('');
+  const [phoneticResult, setPhoneticResult] = useState('');
+  const [result, setResult] = useState('');
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const phoneticMap = {
+    'p': 'p',
+    'b': 'B',
+    't': 'T',
+    'd': 'd',
+    'k': 'K',
+    'g': 'g',
+    'm': 'm',
+    'n': 'N',
+    'ŋ': 'n',
+    'tʃ': 'c',
+    'dʒ': 'J',
+    'f': 'Φ',
+    'v': 'v',
+    'θ': 'θ',
+    'ð': 'Ð',
+    's': 's',
+    'z': 'z',
+    'ʃ': 'ʃ',
+    'ʒ': 'ʒ',
+    'h': 'h',
+    'w': 'w',
+    'j': 'Y',
+    'r': 'R',
+    'l': 'L',
+    'i': 'E',
+    'ɪ': 'i',
+    'e': 'A',
+    'ɛ': 'e',
+    'æ': 'a',
+    'ʌ': 'u',
+    'ə': 'u',
+    'u': 'y',
+    'ʊ': 'ʊ',
+    'oʊ': 'O',
+    'ɔ': 'ɔ',
+    'ɑ': 'ɔ',
+    'aɪ': 'I',
+    'aʊ': 'aw',
+    'ɔɪ': 'OY',
+    'ʔ': 'ʔ',
+    'ər': 'r'
+  };
+
+  const transformWord = () => {
+    console.log('transformWord', inputWord);
+
+    if (!inputWord) return;
+
+    // 1. Get IPA from dictionary
+    const word = inputWord.toLowerCase();
+    const phoneticValue = (dictionary as { [key: string]: string })[word] || 'Word not found';
+    setPhoneticResult(phoneticValue);
+    
+    if (phoneticValue !== 'Word not found') {
+      // 2. Transform using your mapping
+      const sortedKeys = Object.keys(phoneticMap).sort((a, b) => b.length - a.length);
+      
+      // Start with the phonetic result
+      let transformed = phoneticValue;
+      
+      // Apply each transformation in sequence
+      for (const from of sortedKeys) {
+        const to = (phoneticMap as { [key: string]: string })[from];
+        transformed = transformed.replaceAll(from, to);
+      }
+      setResult(transformed.toLowerCase());
+    }
+  };
+
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 p-8">
+      <div className="max-w-4xl mx-auto text-center">
+        <h1 className="text-6xl font-extrabold text-white mb-6 tracking-tight drop-shadow-lg">
+          Phonetics
+        </h1>
+        <p className="text-white/90 text-xl font-light tracking-wide mb-12">
+          Explore the science of speech sounds
+        </p>
+
+        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-8 max-w-xl mx-auto">
+          <div className="flex flex-row gap-4">
+            <input 
+              type="text" 
+              value={inputWord}
+              onChange={(e) => setInputWord(e.target.value)}
+              placeholder="Enter a word..."
+              className="w-full bg-white/20 text-white rounded px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onKeyUp={(e) => e.key === 'Enter' && transformWord()}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            
+            <button 
+              onClick={transformWord}
+              className="w-fit bg-blue-500 text-white rounded px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              Transcribe
+            </button>
+          </div>
+          
+          {result && (
+            <div className="text-2xl text-white mt-6">
+              <div className="mb-2">Phonetic: {phoneticResult}</div>
+              <div>Transcription: {result}</div>
+            </div>
+          )}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+    </main>
   );
 }
