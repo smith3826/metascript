@@ -74,7 +74,7 @@ export default function Home() {
         const to = (phoneticMap as { [key: string]: string })[from];
         transformed = transformed.replaceAll(from, to);
       }
-      setResult(transformed.toLowerCase());
+      setResult(transformed);
     }
   };
 
