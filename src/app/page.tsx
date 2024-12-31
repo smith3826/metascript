@@ -57,8 +57,8 @@ export default function Home() {
 
     // Split input into words
     const words = inputWord.toLowerCase().split(' ');
-    let allPhonetics = [];
-    let allResults = [];
+    const allPhonetics = [];
+    const allResults = [];
 
     for (const word of words) {
       // Get IPA for each word
@@ -68,7 +68,7 @@ export default function Home() {
       if (phoneticValue !== 'Word not found') {
         const sortedKeys = Object.keys(phoneticMap).sort((a, b) => b.length - a.length);
         let transformed = phoneticValue;
-        let processedIndices = new Set();
+        const processedIndices = new Set();
         
         for (const from of sortedKeys) {
           let match;
