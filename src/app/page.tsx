@@ -8,7 +8,7 @@ export default function Home() {
   const [phoneticResult, setPhoneticResult] = useState('');
   const [result, setResult] = useState('');
 
-  const phoneticMap = {
+  const phoneticMap: { [key: string]: string } = {
     'p': 'p',
     'b': 'B',
     't': 'T',
@@ -53,29 +53,47 @@ export default function Home() {
   };
 
   const transformWord = () => {
-    console.log('transformWord', inputWord);
-
     if (!inputWord) return;
 
-    // 1. Get IPA from dictionary
-    const word = inputWord.toLowerCase();
-    const phoneticValue = (dictionary as { [key: string]: string })[word] || 'Word not found';
-    setPhoneticResult(phoneticValue);
-    
-    if (phoneticValue !== 'Word not found') {
-      // 2. Transform using your mapping
-      const sortedKeys = Object.keys(phoneticMap).sort((a, b) => b.length - a.length);
+    // Split input into words
+    const words = inputWord.toLowerCase().split(' ');
+    let allPhonetics = [];
+    let allResults = [];
+
+    for (const word of words) {
+      // Get IPA for each word
+      const phoneticValue = (dictionary as { [key: string]: string })[word] || 'Word not found';
+      allPhonetics.push(phoneticValue);
       
-      // Start with the phonetic result
-      let transformed = phoneticValue;
-      
-      // Apply each transformation in sequence
-      for (const from of sortedKeys) {
-        const to = (phoneticMap as { [key: string]: string })[from];
-        transformed = transformed.replaceAll(from, to);
+      if (phoneticValue !== 'Word not found') {
+        const sortedKeys = Object.keys(phoneticMap).sort((a, b) => b.length - a.length);
+        let transformed = phoneticValue;
+        let processedIndices = new Set();
+        
+        for (const from of sortedKeys) {
+          let match;
+          const regex = new RegExp(from, 'g');
+          
+          while ((match = regex.exec(transformed)) !== null) {
+            if (!processedIndices.has(match.index)) {
+              const before = transformed.slice(0, match.index);
+              const after = transformed.slice(match.index + from.length);
+              transformed = before + phoneticMap[from] + after;
+              
+              for (let i = match.index; i < match.index + from.length; i++) {
+                processedIndices.add(i);
+              }
+            }
+          }
+        }
+        allResults.push(transformed);
+      } else {
+        allResults.push('Word not found');
       }
-      setResult(transformed);
     }
+
+    setPhoneticResult(allPhonetics.join(' '));
+    setResult(allResults.join(' '));
   };
 
   return (
