@@ -49,7 +49,8 @@ export default function Home() {
     'aʊ': 'aw',
     'ɔɪ': 'OY',
     'ʔ': 'ʔ',
-    'ər': 'r'
+    'ər': 'r',
+    'eɪ': 'A'
   };
 
   const transformWord = () => {
@@ -99,11 +100,16 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 p-8">
       <div className="max-w-4xl mx-auto text-center">
-        <h1 className="text-6xl font-extrabold text-white mb-6 tracking-tight drop-shadow-lg">
-          Phonetics
-        </h1>
+        <div className="flex items-center justify-center gap-3 mb-6">
+          <h1 className="text-6xl font-extrabold text-white tracking-tight drop-shadow-lg">
+            Meta Script
+          </h1>
+          <span className="bg-blue-500 text-white text-sm px-2 py-1 rounded-full font-semibold">
+            BETA
+          </span>
+        </div>
         <p className="text-white/90 text-xl font-light tracking-wide mb-12">
-          Explore the science of speech sounds
+          English as it should be
         </p>
 
         <div className="bg-white/10 backdrop-blur-sm rounded-lg p-8 max-w-xl mx-auto">
@@ -128,7 +134,11 @@ export default function Home() {
           {result && (
             <div className="text-2xl text-white mt-6">
               <div className="mb-2">Phonetic: {phoneticResult}</div>
-              <div>Transcription: {result}</div>
+              <div>Transcription: {result.split('').map((char, index) => (
+                <span key={index} className={`${/[A-Z]/.test(char) ? 'text-[1.4rem]' : 'text-[1.6rem]'}`}>
+                  {char}
+                </span>
+              ))}</div>
             </div>
           )}
         </div>
