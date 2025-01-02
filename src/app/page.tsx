@@ -8,6 +8,7 @@ export default function Home() {
   const [phoneticResult, setPhoneticResult] = useState('');
   const [result, setResult] = useState('');
 
+  
   const phoneticMap: { [key: string]: string } = {
     'p': 'p',
     'b': 'B',
