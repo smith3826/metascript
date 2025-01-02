@@ -69,24 +69,28 @@ export default function Home() {
       if (phoneticValue !== 'Word not found') {
         const sortedKeys = Object.keys(phoneticMap).sort((a, b) => b.length - a.length);
         let transformed = phoneticValue;
-        const processedIndices = new Set();
+        let currentIndex = 0;
         
-        for (const from of sortedKeys) {
-          let match;
-          const regex = new RegExp(from, 'g');
+        while (currentIndex < transformed.length) {
+          let matchFound = false;
           
-          while ((match = regex.exec(transformed)) !== null) {
-            if (!processedIndices.has(match.index)) {
-              const before = transformed.slice(0, match.index);
-              const after = transformed.slice(match.index + from.length);
-              transformed = before + phoneticMap[from] + after;
-              
-              for (let i = match.index; i < match.index + from.length; i++) {
-                processedIndices.add(i);
-              }
+          for (const from of sortedKeys) {
+            if (transformed.slice(currentIndex).startsWith(from)) {
+              transformed = 
+                transformed.slice(0, currentIndex) + 
+                phoneticMap[from] + 
+                transformed.slice(currentIndex + from.length);
+              currentIndex += phoneticMap[from].length;
+              matchFound = true;
+              break;
             }
           }
+          
+          if (!matchFound) {
+            currentIndex++;
+          }
         }
+        
         allResults.push(transformed);
       } else {
         allResults.push('Word not found');
@@ -135,7 +139,7 @@ export default function Home() {
             <div className="text-2xl text-white mt-6">
               <div className="mb-2">Phonetic: {phoneticResult}</div>
               <div>Transcription: {result.split('').map((char, index) => (
-                <span key={index} className={`${/[A-Z]/.test(char) ? 'text-[1.4rem]' : 'text-[1.6rem]'}`}>
+                <span key={index} className={`${/[A-Z]/.test(char) ? 'text-[1.4rem]' : 'text-[1.7rem]'}`}>
                   {char}
                 </span>
               ))}</div>
