@@ -49,26 +49,26 @@ export default function Home() {
   callOpenAI("Write a haiku about recursion in programming.");
 
 
-  const ipaPrompt = `
-  You are a linguistics expert specializing in phonetics. Convert the following English word into its International Phonetic Alphabet (IPA) transcription. Use reliable standards like the CMU Pronouncing Dictionary for guidance. If the word has multiple valid pronunciations, provide the most common one in General American English (GA) unless specified otherwise. Respond with only the IPA transcription—no explanations or additional information.
-  `
+  // const ipaPrompt = `
+  // You are a linguistics expert specializing in phonetics. Convert the following English word into its International Phonetic Alphabet (IPA) transcription. Use reliable standards like the CMU Pronouncing Dictionary for guidance. If the word has multiple valid pronunciations, provide the most common one in General American English (GA) unless specified otherwise. Respond with only the IPA transcription—no explanations or additional information.
+  // `
 
-  const phoneticPrompt = `
-  You are a linguistics expert specializing in phonetics and programming. Convert the given International Phonetic Alphabet (IPA) transcription into a custom phonetic format using the provided phoneticMap. For each IPA symbol, map it to its corresponding value in the phoneticMap. Return the result as a single string, replacing each IPA symbol according to the mapping. Respond with only the converted string—no explanations or additional information.
+  // const phoneticPrompt = `
+  // You are a linguistics expert specializing in phonetics and programming. Convert the given International Phonetic Alphabet (IPA) transcription into a custom phonetic format using the provided phoneticMap. For each IPA symbol, map it to its corresponding value in the phoneticMap. Return the result as a single string, replacing each IPA symbol according to the mapping. Respond with only the converted string—no explanations or additional information.
 
-  Phonetic Map:
-  const phoneticMap: PhoneticMap = {
-    'p': 'p', 'b': 'B', 't': 'T', 'd': 'd', 'k': 'K',
-    'g': 'g', 'm': 'm', 'n': 'N', 'ŋ': 'n', 'tʃ': 'c',
-    'dʒ': 'J', 'f': 'Φ', 'v': 'v', 'θ': 'θ', 'ð': 'Ð',
-    's': 's', 'z': 'z', 'ʃ': 'ʃ', 'ʒ': 'ʒ', 'h': 'h',
-    'w': 'w', 'j': 'Y', 'r': 'R', 'l': 'L', 'i': 'E',
-    'ɪ': 'i', 'e': 'A', 'ɛ': 'e', 'æ': 'a', 'ʌ': 'u',
-    'ə': 'u', 'u': 'y', 'ʊ': 'ʊ', 'oʊ': 'O', 'ɔ': 'ɔ',
-    'ɑ': 'ɔ', 'aɪ': 'I', 'aʊ': 'aw', 'ɔɪ': 'OY', 'ʔ': 'ʔ',
-    'ər': 'r', 'eɪ': 'A'
-  };
-  `
+  // Phonetic Map:
+  // const phoneticMap: PhoneticMap = {
+  //   'p': 'p', 'b': 'B', 't': 'T', 'd': 'd', 'k': 'K',
+  //   'g': 'g', 'm': 'm', 'n': 'N', 'ŋ': 'n', 'tʃ': 'c',
+  //   'dʒ': 'J', 'f': 'Φ', 'v': 'v', 'θ': 'θ', 'ð': 'Ð',
+  //   's': 's', 'z': 'z', 'ʃ': 'ʃ', 'ʒ': 'ʒ', 'h': 'h',
+  //   'w': 'w', 'j': 'Y', 'r': 'R', 'l': 'L', 'i': 'E',
+  //   'ɪ': 'i', 'e': 'A', 'ɛ': 'e', 'æ': 'a', 'ʌ': 'u',
+  //   'ə': 'u', 'u': 'y', 'ʊ': 'ʊ', 'oʊ': 'O', 'ɔ': 'ɔ',
+  //   'ɑ': 'ɔ', 'aɪ': 'I', 'aʊ': 'aw', 'ɔɪ': 'OY', 'ʔ': 'ʔ',
+  //   'ər': 'r', 'eɪ': 'A'
+  // };
+  // `
 
   const phoneticMap: PhoneticMap = {
     'p': 'p', 'b': 'B', 't': 'T', 'd': 'd', 'k': 'K',
