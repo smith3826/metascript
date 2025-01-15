@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Download, Book, Sparkles, RefreshCw, Chrome, Puzzle, Music } from 'lucide-react';
 import {
   Card,
@@ -11,17 +11,6 @@ import {
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-
-// Types
-interface Dictionary {
-  [key: string]: string;
-}
-
-interface PhoneticMap {
-  [key: string]: string;
-}
-
-const dictionary: Dictionary = {}; // Import your dictionary here
 
 export default function Home() {
   const [inputWord, setInputWord] = useState('');
@@ -67,19 +56,8 @@ export default function Home() {
   };
   `
 
-  const phoneticMap: PhoneticMap = {
-    'p': 'p', 'b': 'B', 't': 'T', 'd': 'd', 'k': 'K',
-    'g': 'g', 'm': 'm', 'n': 'N', 'ŋ': 'n', 'tʃ': 'c',
-    'dʒ': 'J', 'f': 'Φ', 'v': 'v', 'θ': 'θ', 'ð': 'Ð',
-    's': 's', 'z': 'z', 'ʃ': 'ʃ', 'ʒ': 'ʒ', 'h': 'h',
-    'w': 'w', 'j': 'Y', 'r': 'R', 'l': 'L', 'i': 'E',
-    'ɪ': 'i', 'e': 'A', 'ɛ': 'e', 'æ': 'a', 'ʌ': 'u',
-    'ə': 'u', 'u': 'y', 'ʊ': 'ʊ', 'oʊ': 'O', 'ɔ': 'ɔ',
-    'ɑ': 'ɔ', 'aɪ': 'I', 'aʊ': 'aw', 'ɔɪ': 'OY', 'ʔ': 'ʔ',
-    'ər': 'r', 'eɪ': 'A'
-  };
-
   const transformWord = async () => {
+    setIsLoading(true);
     const word1 = `
     
     ${inputWord}
@@ -92,6 +70,7 @@ export default function Home() {
     `
     const phonetic = await callOpenAI(phoneticPrompt + word2);
     setResult(phonetic);
+    setIsLoading(false);
   };
 
   const handleDownloadGuide = async () => {
