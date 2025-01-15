@@ -21,16 +21,6 @@ interface PhoneticMap {
   [key: string]: string;
 }
 
-interface FileSystem {
-  readFile(path: string, options?: { encoding?: string }): Promise<Uint8Array | string>;
-}
-
-declare global {
-  interface Window {
-    fs: FileSystem;
-  }
-}
-
 const dictionary: Dictionary = {}; // Import your dictionary here
 
 export default function Home() {
@@ -102,18 +92,27 @@ export default function Home() {
 
   const handleDownloadGuide = async () => {
     try {
-      const response = await window.fs.readFile('guide.docx');
-      const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+      // In Next.js, files in the public directory are served from the root URL
+      const response = await fetch('/guide.docx');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
+      
       const a = document.createElement('a');
       a.href = url;
       a.download = 'meta-script-guide.docx';
       document.body.appendChild(a);
       a.click();
+      
+      // Cleanup
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
     } catch (error) {
       console.error('Error downloading guide:', error);
+      // You might want to add user feedback here
     }
   };
 
