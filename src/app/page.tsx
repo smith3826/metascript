@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Download, Book, Sparkles, RefreshCw, Chrome, Puzzle, Music } from 'lucide-react';
 import {
   Card,
@@ -46,29 +46,26 @@ export default function Home() {
     return data.message;
   }
 
-  callOpenAI("Write a haiku about recursion in programming.");
+  const ipaPrompt = `
+  You are a linguistics expert specializing in phonetics. Convert the following English word into its International Phonetic Alphabet (IPA) transcription. Use reliable standards like the CMU Pronouncing Dictionary for guidance. If the word has multiple valid pronunciations, provide the most common one in General American English (GA) unless specified otherwise. Respond with only the IPA transcription—no explanations or additional information.
+  `
 
+  const phoneticPrompt = `
+  You are a linguistics expert specializing in phonetics and programming. Convert the given International Phonetic Alphabet (IPA) transcription into a custom phonetic format using the provided phoneticMap. For each IPA symbol, map it to its corresponding value in the phoneticMap. Return the result as a single string, replacing each IPA symbol according to the mapping. Respond with only the converted string—no explanations or additional information.
 
-  // const ipaPrompt = `
-  // You are a linguistics expert specializing in phonetics. Convert the following English word into its International Phonetic Alphabet (IPA) transcription. Use reliable standards like the CMU Pronouncing Dictionary for guidance. If the word has multiple valid pronunciations, provide the most common one in General American English (GA) unless specified otherwise. Respond with only the IPA transcription—no explanations or additional information.
-  // `
-
-  // const phoneticPrompt = `
-  // You are a linguistics expert specializing in phonetics and programming. Convert the given International Phonetic Alphabet (IPA) transcription into a custom phonetic format using the provided phoneticMap. For each IPA symbol, map it to its corresponding value in the phoneticMap. Return the result as a single string, replacing each IPA symbol according to the mapping. Respond with only the converted string—no explanations or additional information.
-
-  // Phonetic Map:
-  // const phoneticMap: PhoneticMap = {
-  //   'p': 'p', 'b': 'B', 't': 'T', 'd': 'd', 'k': 'K',
-  //   'g': 'g', 'm': 'm', 'n': 'N', 'ŋ': 'n', 'tʃ': 'c',
-  //   'dʒ': 'J', 'f': 'Φ', 'v': 'v', 'θ': 'θ', 'ð': 'Ð',
-  //   's': 's', 'z': 'z', 'ʃ': 'ʃ', 'ʒ': 'ʒ', 'h': 'h',
-  //   'w': 'w', 'j': 'Y', 'r': 'R', 'l': 'L', 'i': 'E',
-  //   'ɪ': 'i', 'e': 'A', 'ɛ': 'e', 'æ': 'a', 'ʌ': 'u',
-  //   'ə': 'u', 'u': 'y', 'ʊ': 'ʊ', 'oʊ': 'O', 'ɔ': 'ɔ',
-  //   'ɑ': 'ɔ', 'aɪ': 'I', 'aʊ': 'aw', 'ɔɪ': 'OY', 'ʔ': 'ʔ',
-  //   'ər': 'r', 'eɪ': 'A'
-  // };
-  // `
+  Phonetic Map:
+  const phoneticMap: PhoneticMap = {
+    'p': 'p', 'b': 'B', 't': 'T', 'd': 'd', 'k': 'K',
+    'g': 'g', 'm': 'm', 'n': 'N', 'ŋ': 'n', 'tʃ': 'c',
+    'dʒ': 'J', 'f': 'Φ', 'v': 'v', 'θ': 'θ', 'ð': 'Ð',
+    's': 's', 'z': 'z', 'ʃ': 'ʃ', 'ʒ': 'ʒ', 'h': 'h',
+    'w': 'w', 'j': 'Y', 'r': 'R', 'l': 'L', 'i': 'E',
+    'ɪ': 'i', 'e': 'A', 'ɛ': 'e', 'æ': 'a', 'ʌ': 'u',
+    'ə': 'u', 'u': 'y', 'ʊ': 'ʊ', 'oʊ': 'O', 'ɔ': 'ɔ',
+    'ɑ': 'ɔ', 'aɪ': 'I', 'aʊ': 'aw', 'ɔɪ': 'OY', 'ʔ': 'ʔ',
+    'ər': 'r', 'eɪ': 'A'
+  };
+  `
 
   const phoneticMap: PhoneticMap = {
     'p': 'p', 'b': 'B', 't': 'T', 'd': 'd', 'k': 'K',
@@ -82,53 +79,19 @@ export default function Home() {
     'ər': 'r', 'eɪ': 'A'
   };
 
-  const transformWord = () => {
-    if (!inputWord) return;
-    setIsLoading(true);
+  const transformWord = async () => {
+    const word1 = `
+    
+    ${inputWord}
+    `
+    const ipa = await callOpenAI(ipaPrompt + word1);
+    setPhoneticResult(ipa);
 
-    try {
-      const words = inputWord.toLowerCase().split(' ');
-      const allPhonetics = [];
-      const allResults = [];
-
-      for (const word of words) {
-        const phoneticValue = dictionary[word] || '?';
-        allPhonetics.push(phoneticValue);
-        
-        if (phoneticValue !== '?') {
-          const sortedKeys = Object.keys(phoneticMap).sort((a, b) => b.length - a.length);
-          let transformed = phoneticValue;
-          let currentIndex = 0;
-          
-          while (currentIndex < transformed.length) {
-            let matchFound = false;
-            
-            for (const from of sortedKeys) {
-              if (transformed.slice(currentIndex).startsWith(from)) {
-                transformed = 
-                  transformed.slice(0, currentIndex) + 
-                  phoneticMap[from] + 
-                  transformed.slice(currentIndex + from.length);
-                currentIndex += phoneticMap[from].length;
-                matchFound = true;
-                break;
-              }
-            }
-            
-            if (!matchFound) currentIndex++;
-          }
-          
-          allResults.push(transformed);
-        } else {
-          allResults.push('?');
-        }
-      }
-
-      setPhoneticResult(allPhonetics.join(' '));
-      setResult(allResults.join(' '));
-    } finally {
-      setIsLoading(false);
-    }
+    const word2 = `
+    ${ipa}
+    `
+    const phonetic = await callOpenAI(phoneticPrompt + word2);
+    setResult(phonetic);
   };
 
   const handleDownloadGuide = async () => {
