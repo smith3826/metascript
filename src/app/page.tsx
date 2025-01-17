@@ -40,24 +40,50 @@ export default function Home() {
   `
 
   const phoneticPrompt = `
-  You are a linguistics expert specializing in phonetics and programming. Convert the given International Phonetic Alphabet (IPA) transcription into a custom phonetic format using the provided phoneticMap. For each IPA symbol, map it to its corresponding value in the phoneticMap. Return the result as a single string, replacing each IPA symbol according to the mapping. Respond with only the converted string—no explanations or additional information. Please retain the spaces between words.
+  You are a linguistics expert specializing in phonetics and programming. Convert the given International Phonetic Alphabet (IPA) transcription into a custom phonetic format using the provided phoneticMap. For each IPA symbol, map it to its corresponding value in the phoneticMap. Return the result as a single string, replacing each IPA symbol according to the mapping. Respond with only the converted string—no explanations or additional information. Please retain the spaces between words and keep the word form.
 
   Phonetic Map:
   const phoneticMap: PhoneticMap = {
-    'p': 'p', 'b': 'B', 't': 'T', 'd': 'd', 'k': 'K',
-    'g': 'g', 'm': 'm', 'n': 'N', 'ŋ': 'n', 'tʃ': 'c',
-    'dʒ': 'J', 'f': 'Φ', 'v': 'v', 'θ': 'θ', 'ð': 'Ð',
-    's': 's', 'z': 'z', 'ʃ': 'ʃ', 'ʒ': 'ʒ', 'h': 'h',
-    'w': 'w', 'j': 'Y', 'r': 'R', 'l': 'L', 'i': 'E',
-    'ɪ': 'i', 'e': 'A', 'ɛ': 'e', 'æ': 'a', 'ʌ': 'u',
-    'ə': 'u', 'u': 'y', 'ʊ': 'ʊ', 'oʊ': 'O', 'ɔ': 'ɔ',
-    'ɑ': 'ɔ', 'aɪ': 'I', 'aʊ': 'aw', 'ɔɪ': 'OY', 'ʔ': 'ʔ',
-    'ər': 'r', 'eɪ': 'A'
-  };
-
-  For example:
-  Input: /ʧɝːʧ pɝːʧ bɝːʧ/
-  Output: cRc pcr Brc
+    'AA': 'ɑ',
+    'AE': 'æ',
+    'AH': 'ʌ',
+    'AO': 'ɔ',
+    'AW': 'aʊ',
+    'AY': 'aɪ',
+    'B': 'b',
+    'CH': 'tʃ',
+    'D': 'd',
+    'DH': 'ð',
+    'EH': 'ɛ',
+    'ER': 'ər',
+    'EY': 'eɪ',
+    'F': 'f',
+    'G': 'g',
+    'HH': 'h',
+    'IH': 'ɪ',
+    'IY': 'i',
+    'JH': 'dʒ',
+    'K': 'k',
+    'L': 'l',
+    'M': 'm',
+    'N': 'n',
+    'NG': 'ŋ',
+    'OW': 'oʊ',
+    'OY': 'ɔɪ',
+    'P': 'p',
+    'R': 'r',
+    'S': 's',
+    'SH': 'ʃ',
+    'T': 't',
+    'TH': 'θ',
+    'UH': 'ʊ',
+    'UW': 'u',
+    'V': 'v',
+    'W': 'w',
+    'Y': 'j',
+    'Z': 'z',
+    'ZH': 'ʒ'
+  }
   `
 
   const transformWord = async () => {
