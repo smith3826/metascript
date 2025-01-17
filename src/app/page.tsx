@@ -40,20 +40,50 @@ export default function Home() {
   `
 
   const phoneticPrompt = `
-  You are a linguistics expert specializing in phonetics and programming. Convert the given International Phonetic Alphabet (IPA) transcription into a custom phonetic format using the provided phoneticMap. For each IPA symbol, map it to its corresponding value in the phoneticMap. Return the result as a single string, replacing each IPA symbol according to the mapping. Respond with only the converted string—no explanations or additional information.
+  You are a linguistics expert specializing in phonetics and programming. Convert the given International Phonetic Alphabet (IPA) transcription into a custom phonetic format using the provided phoneticMap. For each IPA symbol, map it to its corresponding value in the phoneticMap. Return the result as a single string, replacing each IPA symbol according to the mapping. Respond with only the converted string—no explanations or additional information. Please retain the spaces between words and keep the word form.
 
   Phonetic Map:
   const phoneticMap: PhoneticMap = {
-    'p': 'p', 'b': 'B', 't': 'T', 'd': 'd', 'k': 'K',
-    'g': 'g', 'm': 'm', 'n': 'N', 'ŋ': 'n', 'tʃ': 'c',
-    'dʒ': 'J', 'f': 'Φ', 'v': 'v', 'θ': 'θ', 'ð': 'Ð',
-    's': 's', 'z': 'z', 'ʃ': 'ʃ', 'ʒ': 'ʒ', 'h': 'h',
-    'w': 'w', 'j': 'Y', 'r': 'R', 'l': 'L', 'i': 'E',
-    'ɪ': 'i', 'e': 'A', 'ɛ': 'e', 'æ': 'a', 'ʌ': 'u',
-    'ə': 'u', 'u': 'y', 'ʊ': 'ʊ', 'oʊ': 'O', 'ɔ': 'ɔ',
-    'ɑ': 'ɔ', 'aɪ': 'I', 'aʊ': 'aw', 'ɔɪ': 'OY', 'ʔ': 'ʔ',
-    'ər': 'r', 'eɪ': 'A'
-  };
+    'AA': 'ɑ',
+    'AE': 'æ',
+    'AH': 'ʌ',
+    'AO': 'ɔ',
+    'AW': 'aʊ',
+    'AY': 'aɪ',
+    'B': 'b',
+    'CH': 'tʃ',
+    'D': 'd',
+    'DH': 'ð',
+    'EH': 'ɛ',
+    'ER': 'ər',
+    'EY': 'eɪ',
+    'F': 'f',
+    'G': 'g',
+    'HH': 'h',
+    'IH': 'ɪ',
+    'IY': 'i',
+    'JH': 'dʒ',
+    'K': 'k',
+    'L': 'l',
+    'M': 'm',
+    'N': 'n',
+    'NG': 'ŋ',
+    'OW': 'oʊ',
+    'OY': 'ɔɪ',
+    'P': 'p',
+    'R': 'r',
+    'S': 's',
+    'SH': 'ʃ',
+    'T': 't',
+    'TH': 'θ',
+    'UH': 'ʊ',
+    'UW': 'u',
+    'V': 'v',
+    'W': 'w',
+    'Y': 'j',
+    'Z': 'z',
+    'ZH': 'ʒ'
+  }
   `
 
   const transformWord = async () => {
@@ -76,7 +106,7 @@ export default function Home() {
   const handleDownloadGuide = async () => {
     try {
       // In Next.js, files in the public directory are served from the root URL
-      const response = await fetch('/guide.docx');
+      const response = await fetch('/Meta_Script_Beta_.pdf');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -86,7 +116,7 @@ export default function Home() {
       
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'meta-script-guide.docx';
+      a.download = 'Meta Script Guide.pdf';
       document.body.appendChild(a);
       a.click();
       
@@ -173,18 +203,7 @@ export default function Home() {
                   </div>
                   <div className="p-4 rounded-lg bg-white/5 border border-white/10">
                     <p className="text-sm text-blue-300/70 mb-2">Meta Script</p>
-                    <div className="text-white text-2xl font-mono tracking-wide">
-                      {result.split('').map((char, index) => (
-                        <span 
-                          key={index} 
-                          className={`inline-block ${
-                            /[A-Z]/.test(char) ? 'text-blue-400 text-3xl' : ''
-                          }`}
-                        >
-                          {char}
-                        </span>
-                      ))}
-                    </div>
+                    <div className="text-white text-2xl font-mono tracking-wide">{result}</div>
                   </div>
                 </div>
               )}
