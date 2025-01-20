@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import dictionary from '../../public/json/en_US.json';
 
 export default function Home() {
   const [inputWord, setInputWord] = useState('');
@@ -18,89 +19,107 @@ export default function Home() {
   const [result, setResult] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const callOpenAI = async (prompt: string) => {
-    const response = await fetch('/api/openai', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ prompt }),
-    });
+  const ipaToMetaMap: { [key: string]: string } = {
+    'ɑ': 'A',
+    'æ': 'E',
+    'ʌ': 'u',
+    'ɔ': 'ɔ',
+    'aʊ': 'aU',
+    'aɪ': 'aI',
+    'b': 'b',
+    'tʃ': 'C',
+    'd': 'd',
+    'ð': 'D',
+    'ɛ': 'E',
+    'ər': 'R',
+    'eɪ': 'eI',
+    'f': 'f',
+    'g': 'g',
+    'h': 'h',
+    'ɪ': 'I',
+    'i': 'i',
+    'dʒ': 'J',
+    'k': 'k',
+    'l': 'l',
+    'm': 'm',
+    'n': 'N',
+    'ŋ': 'G',
+    'oʊ': 'oU',
+    'ɔɪ': 'oI',
+    'p': 'p',
+    'ɹ': 'R',
+    's': 's',
+    'ʃ': 'S',
+    't': 't',
+    'θ': 'T',
+    'ʊ': 'U',
+    'u': 'u',
+    'v': 'v',
+    'w': 'w',
+    'j': 'y',
+    'z': 'z',
+    'ʒ': 'Z',
+    'ə': 'u'
+};
 
-    if (!response.ok) {
-      throw new Error('API request failed');
-    }
-
-    const data = await response.json();
-    return data.message;
-  }
-
-  const ipaPrompt = `
-  You are a linguistics expert specializing in phonetics. Convert the following English word into its International Phonetic Alphabet (IPA) transcription. Use reliable standards like the CMU Pronouncing Dictionary for guidance. If the word has multiple valid pronunciations, provide the most common one in General American English (GA) unless specified otherwise. Respond with only the IPA transcription—no explanations or additional information.
-  `
-
-  const phoneticPrompt = `
-  You are a linguistics expert specializing in phonetics and programming. Convert the given International Phonetic Alphabet (IPA) transcription into a custom phonetic format using the provided phoneticMap. For each IPA symbol, map it to its corresponding value in the phoneticMap. Return the result as a single string, replacing each IPA symbol according to the mapping. Respond with only the converted string—no explanations or additional information. Please retain the spaces between words and keep the word form.
-
-  Phonetic Map:
-  const phoneticMap: PhoneticMap = {
-    'AA': 'ɑ',
-    'AE': 'æ',
-    'AH': 'ʌ',
-    'AO': 'ɔ',
-    'AW': 'aʊ',
-    'AY': 'aɪ',
-    'B': 'b',
-    'CH': 'tʃ',
-    'D': 'd',
-    'DH': 'ð',
-    'EH': 'ɛ',
-    'ER': 'ər',
-    'EY': 'eɪ',
-    'F': 'f',
-    'G': 'g',
-    'HH': 'h',
-    'IH': 'ɪ',
-    'IY': 'i',
-    'JH': 'dʒ',
-    'K': 'k',
-    'L': 'l',
-    'M': 'm',
-    'N': 'n',
-    'NG': 'ŋ',
-    'OW': 'oʊ',
-    'OY': 'ɔɪ',
-    'P': 'p',
-    'R': 'r',
-    'S': 's',
-    'SH': 'ʃ',
-    'T': 't',
-    'TH': 'θ',
-    'UH': 'ʊ',
-    'UW': 'u',
-    'V': 'v',
-    'W': 'w',
-    'Y': 'j',
-    'Z': 'z',
-    'ZH': 'ʒ'
-  }
-  `
-
-  const transformWord = async () => {
-    setIsLoading(true);
-    const word1 = `
+const transformWord = () => {
+    if (!inputWord) return;
     
-    ${inputWord}
-    `
-    const ipa = await callOpenAI(ipaPrompt + word1);
-    setPhoneticResult(ipa);
+    console.log('Starting word transformation for:', inputWord);
+    setIsLoading(true);
+    try {
+      const words = inputWord.toLowerCase().split(' ');
+      const allPhonetics = [];
+      const allResults = [];
 
-    const word2 = `
-    ${ipa}
-    `
-    const phonetic = await callOpenAI(phoneticPrompt + word2);
-    setResult(phonetic);
-    setIsLoading(false);
+      for (const word of words) {
+        const phoneticValue = (dictionary as { [key: string]: string })[word] || 'Word not found';
+        allPhonetics.push(phoneticValue);
+        
+        if (phoneticValue !== 'Word not found') {
+          // Remove stress marks and slashes
+          let transformed = phoneticValue.replace(/[ˈˌ\/]/g, '');
+          let currentIndex = 0;
+          
+          // Sort by length to handle multi-character symbols first (like 'dʒ')
+          const sortedKeys = Object.keys(ipaToMetaMap).sort((a, b) => b.length - a.length);
+          
+          while (currentIndex < transformed.length) {
+            let matchFound = false;
+            
+            for (const from of sortedKeys) {
+              if (transformed.slice(currentIndex).startsWith(from)) {
+                transformed = 
+                  transformed.slice(0, currentIndex) + 
+                  ipaToMetaMap[from] + 
+                  transformed.slice(currentIndex + from.length);
+                currentIndex += ipaToMetaMap[from].length;
+                matchFound = true;
+                break;
+              }
+            }
+            
+            if (!matchFound) {
+              currentIndex++;
+            }
+          }
+          
+          allResults.push(transformed);
+        } else {
+          allResults.push('Word not found');
+        }
+      }
+
+      const finalPhonetics = allPhonetics.join(' ');
+      const finalResult = allResults.join(' ');
+      
+      setPhoneticResult(finalPhonetics);
+      setResult(finalResult);
+    } catch (error) {
+      console.error('Error during transformation:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleDownloadGuide = async () => {
@@ -128,7 +147,7 @@ export default function Home() {
       // You might want to add user feedback here
     }
   };
-
+  
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 p-4 lg:p-8">
     <div className="max-w-5xl mx-auto">
