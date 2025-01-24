@@ -20,46 +20,48 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
 
   const ipaToMetaMap: { [key: string]: string } = {
-    'ɑ': 'A',
-    'æ': 'E',
-    'ʌ': 'u',
-    'ɔ': 'ɔ',
-    'aʊ': 'aU',
-    'aɪ': 'aI',
-    'b': 'b',
-    'tʃ': 'C',
+    'p': 'p',
+    'b': 'B',
+    't': 'T',
     'd': 'd',
-    'ð': 'D',
-    'ɛ': 'E',
-    'ər': 'R',
-    'eɪ': 'eI',
-    'f': 'f',
+    'k': 'K',
     'g': 'g',
-    'h': 'h',
-    'ɪ': 'I',
-    'i': 'i',
-    'dʒ': 'J',
-    'k': 'k',
-    'l': 'l',
     'm': 'm',
     'n': 'N',
-    'ŋ': 'G',
-    'oʊ': 'oU',
-    'ɔɪ': 'oI',
-    'p': 'p',
-    'ɹ': 'R',
-    's': 's',
-    'ʃ': 'S',
-    't': 't',
-    'θ': 'T',
-    'ʊ': 'U',
-    'u': 'u',
+    'ŋ': 'N',
+    'tʃ': 'c',
+    'dʒ': 'J',
+    'f': 'Φ',
     'v': 'v',
-    'w': 'w',
-    'j': 'y',
+    'θ': 'θ',
+    'ð': 'Ð',
+    's': 's',
     'z': 'z',
-    'ʒ': 'Z',
-    'ə': 'u'
+    'ʃ': 'ʃ',
+    'ʒ': 'ʒ',
+    'h': 'h',
+    'w': 'w',
+    'j': 'Y',
+    'r': 'R',
+    'l': 'L',
+    'i': 'E',
+    'ɪ': 'i',
+    'e': 'A',
+    'ɛ': 'e',
+    'æ': 'a',
+    'ʌ': 'u',
+    'ə': 'u',
+    'u': 'y',
+    'ʊ': 'ʊ',
+    'oʊ': 'O',
+    'ɔ': 'ɔ',
+    'ɑ': 'ɔ',
+    'aɪ': 'I',
+    'aʊ': 'aw',
+    'ɔɪ': 'OY',
+    'ʔ': 'ʔ',
+    'ər': 'r',
+    'ɹ': 'R',
 };
 
 const transformWord = () => {
@@ -74,11 +76,13 @@ const transformWord = () => {
 
       for (const word of words) {
         const phoneticValue = (dictionary as { [key: string]: string })[word] || 'Word not found';
-        allPhonetics.push(phoneticValue);
+        // Take only the first pronunciation if multiple exist (split by comma)
+        const firstPhonetic = phoneticValue.split(',')[0];
+        allPhonetics.push(firstPhonetic);
         
         if (phoneticValue !== 'Word not found') {
           // Remove stress marks and slashes
-          let transformed = phoneticValue.replace(/[ˈˌ\/]/g, '');
+          let transformed = firstPhonetic.replace(/[ˈˌ\/]/g, '');
           let currentIndex = 0;
           
           // Sort by length to handle multi-character symbols first (like 'dʒ')
