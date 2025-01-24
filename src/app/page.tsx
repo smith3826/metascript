@@ -61,6 +61,7 @@ export default function Home() {
     'ɔɪ': 'OY',
     'ʔ': 'ʔ',
     'ər': 'r',
+    'ɹ': 'R',
 };
 
 const transformWord = () => {
