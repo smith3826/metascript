@@ -74,11 +74,13 @@ const transformWord = () => {
 
       for (const word of words) {
         const phoneticValue = (dictionary as { [key: string]: string })[word] || 'Word not found';
-        allPhonetics.push(phoneticValue);
+        // Take only the first pronunciation if multiple exist (split by comma)
+        const firstPhonetic = phoneticValue.split(',')[0];
+        allPhonetics.push(firstPhonetic);
         
         if (phoneticValue !== 'Word not found') {
           // Remove stress marks and slashes
-          let transformed = phoneticValue.replace(/[ˈˌ\/]/g, '');
+          let transformed = firstPhonetic.replace(/[ˈˌ\/]/g, '');
           let currentIndex = 0;
           
           // Sort by length to handle multi-character symbols first (like 'dʒ')
