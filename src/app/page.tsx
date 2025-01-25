@@ -190,7 +190,6 @@ const transformWord = () => {
     <div className="max-w-5xl mx-auto">
       <div className="flex flex-col items-center justify-center mb-12">
         <div className="flex items-center gap-3 mb-2">
-          <Sparkles className="w-8 h-8 text-blue-400" />
           <h1 className="text-4xl lg:text-6xl font-bold text-white bg-clip-text text-transparent">
             Meta Script
           </h1>
