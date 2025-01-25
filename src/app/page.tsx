@@ -81,7 +81,7 @@ const transformWord = () => {
     console.log('Starting word transformation for:', inputWord);
     setIsLoading(true);
     try {
-      const words = inputWord.toLowerCase().split(' ');
+      const words = inputWord.replace(/[.,!?;:'"\/\\()\[\]{}]/g, '').trim().toLowerCase().split(' ');
       const allPhonetics = [];
       const allResults = [];
 
