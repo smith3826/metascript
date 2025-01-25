@@ -1,7 +1,7 @@
 'use client';
    
 import React, { useState } from 'react';
-import { Download, Book, RefreshCw, Chrome, Puzzle, Music } from 'lucide-react';
+import { Download, Book, RefreshCw, Chrome, AppleIcon, Puzzle, Music } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -73,6 +73,10 @@ export default function Home() {
     'ɪŋə': 'Eng',
     'ɪŋɪ': 'Eng',
     'ɪŋd': 'Eng',
+    'tɹ': 'cR',
+    'ɛɹ': 'Ar',
+    'dɹ': 'JR',
+    'ɪŋɪŋ': 'EngEng'
 };
 
 const transformWord = () => {
@@ -299,7 +303,7 @@ const transformWord = () => {
               <div className="p-4 rounded-lg bg-white/5 border border-white/10">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <Chrome className="w-5 h-5 text-blue-400" />
+                    <AppleIcon className="w-5 h-5 text-blue-400" />
                     <h3 className="text-white font-medium">Add to Home Screen</h3>
                   </div>
                   <Button
