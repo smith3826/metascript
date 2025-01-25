@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Download, Book, Sparkles, RefreshCw, Chrome, Puzzle, Music } from 'lucide-react';
+import { Download, Book, RefreshCw, Chrome, Puzzle, Music } from 'lucide-react';
 import {
   Card,
   CardContent,
