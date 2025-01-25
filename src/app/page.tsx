@@ -1,7 +1,7 @@
 'use client';
    
 import React, { useState } from 'react';
-import { Download, Book, Sparkles, RefreshCw, Chrome, Puzzle, Music } from 'lucide-react';
+import { Download, Book, RefreshCw, Chrome, Puzzle, Music } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -62,6 +62,17 @@ export default function Home() {
     'ʔ': 'ʔ',
     'ər': 'r',
     'ɹ': 'R',
+    'ɫ': 'L',
+    'Tr': 'cR',
+    'ɝ': 'r',
+    'eɪ': 'A',
+    'ɛr': 'Ar',
+    'dr': 'JR',
+    'ɪŋ': 'Eng',
+    'ɪŋz': 'Engz',
+    'ɪŋə': 'Eng',
+    'ɪŋɪ': 'Eng',
+    'ɪŋd': 'Eng',
 };
 
 const transformWord = () => {
@@ -70,17 +81,17 @@ const transformWord = () => {
     console.log('Starting word transformation for:', inputWord);
     setIsLoading(true);
     try {
-      const words = inputWord.toLowerCase().split(' ');
+      const words = inputWord.replace(/[.,!?;:'"\/\\()\[\]{}]/g, '').trim().toLowerCase().split(' ');
       const allPhonetics = [];
       const allResults = [];
 
       for (const word of words) {
-        const phoneticValue = (dictionary as { [key: string]: string })[word] || 'Word not found';
+        const phoneticValue = (dictionary as { [key: string]: string })[word] || '?';
         // Take only the first pronunciation if multiple exist (split by comma)
-        const firstPhonetic = phoneticValue.split(',')[0];
+        const firstPhonetic = word === 'was' ? phoneticValue.split(',')[1] : phoneticValue.split(',')[0];
         allPhonetics.push(firstPhonetic);
         
-        if (phoneticValue !== 'Word not found') {
+        if (phoneticValue !== '?') {
           // Remove stress marks and slashes
           let transformed = firstPhonetic.replace(/[ˈˌ\/]/g, '');
           let currentIndex = 0;
@@ -110,7 +121,7 @@ const transformWord = () => {
           
           allResults.push(transformed);
         } else {
-          allResults.push('Word not found');
+          allResults.push('?');
         }
       }
 
@@ -128,7 +139,6 @@ const transformWord = () => {
 
   const handleDownloadGuide = async () => {
     try {
-      // In Next.js, files in the public directory are served from the root URL
       const response = await fetch('/Meta_Script_Beta_.pdf');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -148,7 +158,30 @@ const transformWord = () => {
       document.body.removeChild(a);
     } catch (error) {
       console.error('Error downloading guide:', error);
-      // You might want to add user feedback here
+    }
+  };
+
+  const handleDownloadHomeScreenGuide = async () => {
+    try {
+      const response = await fetch('/addtohomescreen.rtf');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Add to Home Screen Guide.rtf';
+      document.body.appendChild(a);
+      a.click();
+      
+      // Cleanup
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading home screen guide:', error);
     }
   };
   
@@ -157,8 +190,7 @@ const transformWord = () => {
     <div className="max-w-5xl mx-auto">
       <div className="flex flex-col items-center justify-center mb-12">
         <div className="flex items-center gap-3 mb-2">
-          <Sparkles className="w-8 h-8 text-blue-400" />
-          <h1 className="text-4xl lg:text-6xl font-bold bg-gradient-to-r from-white to-blue-400 bg-clip-text text-transparent">
+          <h1 className="text-4xl lg:text-6xl font-bold text-white bg-clip-text text-transparent">
             Meta Script
           </h1>
           <span className="bg-blue-600/20 text-blue-400 text-xs px-3 py-1 rounded-full font-medium border border-blue-500/20">
@@ -262,6 +294,26 @@ const transformWord = () => {
                 <p className="text-sm text-blue-300/70">
                   Comprehensive guide explaining Meta Script notation, 
                   including examples and best practices.
+                </p>
+              </div>
+              <div className="p-4 rounded-lg bg-white/5 border border-white/10">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <Chrome className="w-5 h-5 text-blue-400" />
+                    <h3 className="text-white font-medium">Add to Home Screen</h3>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-blue-500/20 hover:border-blue-500/40 text-blue-400"
+                    onClick={handleDownloadHomeScreenGuide}
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download
+                  </Button>
+                </div>
+                <p className="text-sm text-blue-300/70">
+                  Step-by-step guide on how to add Meta Script to your iPhone home screen for quick access.
                 </p>
               </div>
             </div>
