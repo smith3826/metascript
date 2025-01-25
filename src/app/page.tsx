@@ -139,7 +139,6 @@ const transformWord = () => {
 
   const handleDownloadGuide = async () => {
     try {
-      // In Next.js, files in the public directory are served from the root URL
       const response = await fetch('/Meta_Script_Beta_.pdf');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -159,7 +158,30 @@ const transformWord = () => {
       document.body.removeChild(a);
     } catch (error) {
       console.error('Error downloading guide:', error);
-      // You might want to add user feedback here
+    }
+  };
+
+  const handleDownloadHomeScreenGuide = async () => {
+    try {
+      const response = await fetch('/addtohomescreen.rtf');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Add to Home Screen Guide.rtf';
+      document.body.appendChild(a);
+      a.click();
+      
+      // Cleanup
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading home screen guide:', error);
     }
   };
   
@@ -273,6 +295,26 @@ const transformWord = () => {
                 <p className="text-sm text-blue-300/70">
                   Comprehensive guide explaining Meta Script notation, 
                   including examples and best practices.
+                </p>
+              </div>
+              <div className="p-4 rounded-lg bg-white/5 border border-white/10">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <Chrome className="w-5 h-5 text-blue-400" />
+                    <h3 className="text-white font-medium">Add to Home Screen</h3>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-blue-500/20 hover:border-blue-500/40 text-blue-400"
+                    onClick={handleDownloadHomeScreenGuide}
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download
+                  </Button>
+                </div>
+                <p className="text-sm text-blue-300/70">
+                  Step-by-step guide on how to add Meta Script to your iPhone home screen for quick access.
                 </p>
               </div>
             </div>
