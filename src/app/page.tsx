@@ -88,7 +88,7 @@ const transformWord = () => {
       for (const word of words) {
         const phoneticValue = (dictionary as { [key: string]: string })[word] || '?';
         // Take only the first pronunciation if multiple exist (split by comma)
-        const firstPhonetic = phoneticValue.split(',')[0];
+        const firstPhonetic = word === 'was' ? phoneticValue.split(',')[1] : phoneticValue.split(',')[0];
         allPhonetics.push(firstPhonetic);
         
         if (phoneticValue !== '?') {
