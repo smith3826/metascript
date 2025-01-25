@@ -62,6 +62,17 @@ export default function Home() {
     'ʔ': 'ʔ',
     'ər': 'r',
     'ɹ': 'R',
+    'ɫ': 'L',
+    'Tr': 'cR',
+    'ɝ': 'r',
+    'eɪ': 'A',
+    'ɛr': 'Ar',
+    'dr': 'JR',
+    'ɪŋ': 'Eng',
+    'ɪŋz': 'Engz',
+    'ɪŋə': 'Eng',
+    'ɪŋɪ': 'Eng',
+    'ɪŋd': 'Eng',
 };
 
 const transformWord = () => {
