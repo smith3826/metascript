@@ -86,12 +86,12 @@ const transformWord = () => {
       const allResults = [];
 
       for (const word of words) {
-        const phoneticValue = (dictionary as { [key: string]: string })[word] || 'Word not found';
+        const phoneticValue = (dictionary as { [key: string]: string })[word] || '?';
         // Take only the first pronunciation if multiple exist (split by comma)
         const firstPhonetic = phoneticValue.split(',')[0];
         allPhonetics.push(firstPhonetic);
         
-        if (phoneticValue !== 'Word not found') {
+        if (phoneticValue !== '?') {
           // Remove stress marks and slashes
           let transformed = firstPhonetic.replace(/[ˈˌ\/]/g, '');
           let currentIndex = 0;
@@ -121,7 +121,7 @@ const transformWord = () => {
           
           allResults.push(transformed);
         } else {
-          allResults.push('Word not found');
+          allResults.push('?');
         }
       }
 
@@ -169,7 +169,7 @@ const transformWord = () => {
       <div className="flex flex-col items-center justify-center mb-12">
         <div className="flex items-center gap-3 mb-2">
           <Sparkles className="w-8 h-8 text-blue-400" />
-          <h1 className="text-4xl lg:text-6xl font-bold bg-gradient-to-r from-white to-blue-400 bg-clip-text text-transparent">
+          <h1 className="text-4xl lg:text-6xl font-bold text-white bg-clip-text text-transparent">
             Meta Script
           </h1>
           <span className="bg-blue-600/20 text-blue-400 text-xs px-3 py-1 rounded-full font-medium border border-blue-500/20">
