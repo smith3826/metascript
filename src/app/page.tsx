@@ -286,7 +286,9 @@ const transformWord = () => {
                   </div>
                   <div className="p-4 rounded-lg bg-white/5 border border-white/10">
                     <p className="text-sm text-blue-300/70 mb-2">Meta Script ™</p>
-                    <div className="text-white text-2xl font-mono tracking-wide">{result}</div>
+                    <div className="text-white text-2xl font-mono tracking-wide">
+                      {result.replace(/^t|(?:^(?:ə|eɪ).*)t/gi, 'T').replace(/t/g, 't')}
+                    </div>
                   </div>
                 </div>
               )}
