@@ -192,6 +192,30 @@ const transformWord = () => {
       console.error('Error downloading home screen guide:', error);
     }
   };
+
+  const handleDownloadScrabble = async () => {
+    try {
+      const response = await fetch('/Scrabble multicolor_ 0.2mm nozzle and 0.1mm layer height.zip');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Meta Script Scrabble.zip';
+      document.body.appendChild(a);
+      a.click();
+      
+      // Cleanup
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading scrabble file:', error);
+    }
+  };
   
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 p-4 lg:p-8">
@@ -214,10 +238,6 @@ const transformWord = () => {
           <div className="flex items-center gap-2 bg-blue-500/10 text-blue-300 text-sm px-3 py-1.5 rounded-full border border-blue-500/20">
             <Chrome className="w-4 h-4" />
             <span>Chrome Extension Coming Soon</span>
-          </div>
-          <div className="flex items-center gap-2 bg-blue-500/10 text-blue-300 text-sm px-3 py-1.5 rounded-full border border-blue-500/20">
-            <Puzzle className="w-4 h-4" />
-            <span>Scrabble Pieces in Development</span>
           </div>
           <div className="flex items-center gap-2 bg-blue-500/10 text-blue-300 text-sm px-3 py-1.5 rounded-full border border-blue-500/20">
             <Music className="w-4 h-4" />
@@ -322,6 +342,26 @@ const transformWord = () => {
                 </div>
                 <p className="text-sm text-blue-300/70">
                   Step-by-step guide on how to add Meta Script to your iPhone home screen for quick access.
+                </p>
+              </div>
+              <div className="p-4 rounded-lg bg-white/5 border border-white/10">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <Puzzle className="w-5 h-5 text-blue-400" />
+                    <h3 className="text-white font-medium">3D Printable Scrabble Tiles</h3>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-blue-500/20 hover:border-blue-500/40 text-blue-400"
+                    onClick={handleDownloadScrabble}
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download
+                  </Button>
+                </div>
+                <p className="text-sm text-blue-300/70">
+                  3D printer files for Meta Script Scrabble tiles (0.2mm nozzle, 0.1mm layer height).
                 </p>
               </div>
             </div>
