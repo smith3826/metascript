@@ -76,7 +76,11 @@ export default function Home() {
     'tɹ': 'cR',
     'ɛɹ': 'Ar',
     'dɹ': 'JR',
-    'ɪŋɪŋ': 'EngEng'
+    'ɪŋɪŋ': 'EngEng',
+    'ɑɹ': 'ɔr',
+    'ɡ': 'g',
+    'ɪŋk': 'EnK',
+
 };
 
 const transformWord = () => {
@@ -261,7 +265,7 @@ const transformWord = () => {
                     <p className="text-white text-lg font-mono">{phoneticResult}</p>
                   </div>
                   <div className="p-4 rounded-lg bg-white/5 border border-white/10">
-                    <p className="text-sm text-blue-300/70 mb-2">Meta Script</p>
+                    <p className="text-sm text-blue-300/70 mb-2">Meta Script ™</p>
                     <div className="text-white text-2xl font-mono tracking-wide">{result}</div>
                   </div>
                 </div>

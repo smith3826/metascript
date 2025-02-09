@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Meta Script",
   description: "Transform English into its purest form",
+  icons: {
+    icon: '/logo.png',
+  },
 };
 
 export default function RootLayout({
