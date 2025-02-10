@@ -157,7 +157,7 @@ const transformWord = () => {
       
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'Meta Script Guide.pdf';
+      a.download = 'Meta Script™ Guide.pdf';
       document.body.appendChild(a);
       a.click();
       
@@ -205,7 +205,7 @@ const transformWord = () => {
       
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'Meta Script Scrabble.zip';
+      a.download = 'Meta Script™ Scrabble.zip';
       document.body.appendChild(a);
       a.click();
       
@@ -223,7 +223,7 @@ const transformWord = () => {
       <div className="flex flex-col items-center justify-center mb-12">
         <div className="flex items-center gap-3 mb-2">
           <h1 className="text-4xl lg:text-6xl font-bold text-white bg-clip-text text-transparent">
-            Meta Script
+            Meta Script™
           </h1>
           <span className="bg-blue-600/20 text-blue-400 text-xs px-3 py-1 rounded-full font-medium border border-blue-500/20">
             BETA
@@ -251,7 +251,7 @@ const transformWord = () => {
           <CardHeader>
             <CardTitle className="text-white">Transcriber</CardTitle>
             <CardDescription className="text-blue-300/70">
-              Enter text to convert it to Meta Script notation
+              Enter text to convert it to Meta Script™ notation
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -285,7 +285,7 @@ const transformWord = () => {
                     <p className="text-white text-lg font-mono">{phoneticResult}</p>
                   </div>
                   <div className="p-4 rounded-lg bg-white/5 border border-white/10">
-                    <p className="text-sm text-blue-300/70 mb-2">Meta Script ™</p>
+                    <p className="text-sm text-blue-300/70 mb-2">Meta Script™</p>
                     <div className="text-white text-2xl font-mono tracking-wide">
                       {result.replace(/^t|(?:^(?:ə|eɪ).*)t/gi, 'T').replace(/t/g, 't')}
                     </div>
@@ -300,7 +300,7 @@ const transformWord = () => {
           <CardHeader>
             <CardTitle className="text-white">Resources</CardTitle>
             <CardDescription className="text-blue-300/70">
-              Learn more about Meta Script notation
+              Learn more about Meta Script™ notation
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -322,7 +322,7 @@ const transformWord = () => {
                   </Button>
                 </div>
                 <p className="text-sm text-blue-300/70">
-                  Comprehensive guide explaining Meta Script notation, 
+                  Comprehensive guide explaining Meta Script™ notation, 
                   including examples and best practices.
                 </p>
               </div>
@@ -343,7 +343,7 @@ const transformWord = () => {
                   </Button>
                 </div>
                 <p className="text-sm text-blue-300/70">
-                  Step-by-step guide on how to add Meta Script to your iPhone home screen for quick access.
+                  Step-by-step guide on how to add Meta Script™ to your iPhone home screen for quick access.
                 </p>
               </div>
               <div className="p-4 rounded-lg bg-white/5 border border-white/10">
@@ -363,7 +363,7 @@ const transformWord = () => {
                   </Button>
                 </div>
                 <p className="text-sm text-blue-300/70">
-                  3D printer files for Meta Script Scrabble tiles (0.2mm nozzle, 0.1mm layer height).
+                  3D printer files for Meta Script™ Scrabble tiles (0.2mm nozzle, 0.1mm layer height).
                 </p>
               </div>
             </div>
