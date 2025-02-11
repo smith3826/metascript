@@ -126,8 +126,13 @@ const transformWord = () => {
               currentIndex++;
             }
           }
-          
+
+          transformed = transformed.replace(/^t/i, 'T').replace(/t/g, 't');
+          // Apply t/T rule if 't' is preceded by 'u' or 'A'
+          transformed = transformed.replace(/(?<=[uA])t/i, 'T');
+
           allResults.push(transformed);
+
         } else {
           allResults.push('?');
         }
@@ -137,9 +142,7 @@ const transformWord = () => {
       const finalResult = allResults.join(' ');
       
       setPhoneticResult(finalPhonetics);
-      // Apply t/T rule after all transformations are complete
-      const resultWithTRule = finalResult.replace(/^t|(?:^(?:u|A).*)t/gi, 'T').replace(/t/g, 't');
-      setResult(resultWithTRule);
+      setResult(finalResult);
     } catch (error) {
       console.error('Error during transformation:', error);
     } finally {
