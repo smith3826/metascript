@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Meta Script™",
+  title: "Meta Script",
   description: "Transform English into its purest form",
   icons: {
     icon: '/logo.png',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: "Meta Script™",
+    title: "Meta Script",
   },
   other: {
     'apple-mobile-web-app-capable': 'yes',

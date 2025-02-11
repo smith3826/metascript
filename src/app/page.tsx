@@ -22,7 +22,7 @@ export default function Home() {
   const ipaToMetaMap: { [key: string]: string } = {
     'p': 'p',
     'b': 'B',
-    't': 'T',
+    't': 't',
     'd': 'd',
     'k': 'K',
     'g': 'g',
@@ -137,7 +137,9 @@ const transformWord = () => {
       const finalResult = allResults.join(' ');
       
       setPhoneticResult(finalPhonetics);
-      setResult(finalResult);
+      // Apply t/T rule after all transformations are complete
+      const resultWithTRule = finalResult.replace(/^t|(?:^(?:u|A).*)t/gi, 'T').replace(/t/g, 't');
+      setResult(resultWithTRule);
     } catch (error) {
       console.error('Error during transformation:', error);
     } finally {
@@ -287,7 +289,7 @@ const transformWord = () => {
                   <div className="p-4 rounded-lg bg-white/5 border border-white/10">
                     <p className="text-sm text-blue-300/70 mb-2">Meta Script™</p>
                     <div className="text-white text-2xl font-mono tracking-wide">
-                      {result.replace(/^t|(?:^(?:ə|eɪ).*)t/gi, 'T').replace(/t/g, 't')}
+                      {result}
                     </div>
                   </div>
                 </div>
