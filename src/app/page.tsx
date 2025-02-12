@@ -80,7 +80,9 @@ export default function Home() {
     'ɑɹ': 'ɔr',
     'ɡ': 'g',
     'ɪŋk': 'EnK',
-
+    'ɪɹ': 'Er',
+    'ɔɹ': 'Or',
+    'ʊɹ': 'ʊr',
 };
 
 const transformWord = () => {
@@ -132,6 +134,8 @@ const transformWord = () => {
           if (transformed.match(/^[uA]/)) {
             transformed = transformed.replace(/t/g, 'T');
           }
+          // convert t to T when preceeded by K
+          transformed = transformed.replace(/Kt/g, 'KT');
 
           allResults.push(transformed);
 
