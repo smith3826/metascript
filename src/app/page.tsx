@@ -128,8 +128,10 @@ const transformWord = () => {
           }
 
           transformed = transformed.replace(/^t/i, 'T').replace(/t/g, 't');
-          // Apply t/T rule if 't' is preceded by 'u' or 'A'
-          transformed = transformed.replace(/(?<=[uA])t/i, 'T');
+          // Only apply t->T rule if word starts with 'u' or 'A'
+          if (transformed.match(/^[uA]/)) {
+            transformed = transformed.replace(/t/g, 'T');
+          }
 
           allResults.push(transformed);
 
@@ -219,6 +221,30 @@ const transformWord = () => {
       document.body.removeChild(a);
     } catch (error) {
       console.error('Error downloading scrabble file:', error);
+    }
+  };
+
+  const handleDownloadScrabbleGuidelines = async () => {
+    try {
+      const response = await fetch('/Scrabble Guidelines.pdf');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Meta Script™ Scrabble Guidelines.pdf';
+      document.body.appendChild(a);
+      a.click();
+      
+      // Cleanup
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading scrabble guidelines:', error);
     }
   };
   
@@ -355,20 +381,31 @@ const transformWord = () => {
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <Puzzle className="w-5 h-5 text-blue-400" />
-                    <h3 className="text-white font-medium">3D Printable Scrabble Tiles</h3>
+                    <h3 className="text-white font-medium">Meta Script™ Scrabble</h3>
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-blue-500/20 hover:border-blue-500/40 text-blue-400"
-                    onClick={handleDownloadScrabble}
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Download
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-blue-500/20 hover:border-blue-500/40 text-blue-400"
+                      onClick={handleDownloadScrabble}
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      3D Files
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-blue-500/20 hover:border-blue-500/40 text-blue-400"
+                      onClick={handleDownloadScrabbleGuidelines}
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Guidelines
+                    </Button>
+                  </div>
                 </div>
                 <p className="text-sm text-blue-300/70">
-                  3D printer files for Meta Script™ Scrabble tiles (0.2mm nozzle, 0.1mm layer height).
+                  Download 3D printer files for Meta Script™ Scrabble tiles (0.2mm nozzle, 0.1mm layer height) and game guidelines.
                 </p>
               </div>
             </div>
