@@ -1,7 +1,7 @@
 'use client';
    
 import React, { useState } from 'react';
-import { Download, Book, RefreshCw, Chrome, AppleIcon, Puzzle, Music } from 'lucide-react';
+import { Download, Book, RefreshCw, Chrome, SmartphoneIcon, Puzzle, Music } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -22,7 +22,7 @@ export default function Home() {
   const ipaToMetaMap: { [key: string]: string } = {
     'p': 'p',
     'b': 'B',
-    't': 'T',
+    't': 't',
     'd': 'd',
     'k': 'K',
     'g': 'g',
@@ -76,7 +76,13 @@ export default function Home() {
     'tɹ': 'cR',
     'ɛɹ': 'Ar',
     'dɹ': 'JR',
-    'ɪŋɪŋ': 'EngEng'
+    'ɪŋɪŋ': 'EngEng',
+    'ɑɹ': 'ɔr',
+    'ɡ': 'g',
+    'ɪŋk': 'EnK',
+    'ɪɹ': 'Er',
+    'ɔɹ': 'Or',
+    'ʊɹ': 'ʊr',
 };
 
 const transformWord = () => {
@@ -122,8 +128,17 @@ const transformWord = () => {
               currentIndex++;
             }
           }
-          
+
+          transformed = transformed.replace(/^t/i, 'T').replace(/t/g, 't');
+          // Only apply t->T rule if word starts with 'u' or 'A'
+          if (transformed.match(/^[uA]/)) {
+            transformed = transformed.replace(/t/g, 'T');
+          }
+          // convert t to T when preceeded by K
+          transformed = transformed.replace(/Kt/g, 'KT');
+
           allResults.push(transformed);
+
         } else {
           allResults.push('?');
         }
@@ -153,7 +168,7 @@ const transformWord = () => {
       
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'Meta Script Guide.pdf';
+      a.download = 'Meta Script™ Guide.pdf';
       document.body.appendChild(a);
       a.click();
       
@@ -188,6 +203,54 @@ const transformWord = () => {
       console.error('Error downloading home screen guide:', error);
     }
   };
+
+  const handleDownloadScrabble = async () => {
+    try {
+      const response = await fetch('/Scrabble multicolor_ 0.2mm nozzle and 0.1mm layer height.zip');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Meta Script™ Scrabble.zip';
+      document.body.appendChild(a);
+      a.click();
+      
+      // Cleanup
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading scrabble file:', error);
+    }
+  };
+
+  const handleDownloadScrabbleGuidelines = async () => {
+    try {
+      const response = await fetch('/Scrabble Guidelines.pdf');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Meta Script™ Scrabble Guidelines.pdf';
+      document.body.appendChild(a);
+      a.click();
+      
+      // Cleanup
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading scrabble guidelines:', error);
+    }
+  };
   
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 p-4 lg:p-8">
@@ -195,7 +258,7 @@ const transformWord = () => {
       <div className="flex flex-col items-center justify-center mb-12">
         <div className="flex items-center gap-3 mb-2">
           <h1 className="text-4xl lg:text-6xl font-bold text-white bg-clip-text text-transparent">
-            Meta Script
+            Meta Script™
           </h1>
           <span className="bg-blue-600/20 text-blue-400 text-xs px-3 py-1 rounded-full font-medium border border-blue-500/20">
             BETA
@@ -212,10 +275,6 @@ const transformWord = () => {
             <span>Chrome Extension Coming Soon</span>
           </div>
           <div className="flex items-center gap-2 bg-blue-500/10 text-blue-300 text-sm px-3 py-1.5 rounded-full border border-blue-500/20">
-            <Puzzle className="w-4 h-4" />
-            <span>Scrabble Pieces in Development</span>
-          </div>
-          <div className="flex items-center gap-2 bg-blue-500/10 text-blue-300 text-sm px-3 py-1.5 rounded-full border border-blue-500/20">
             <Music className="w-4 h-4" />
             <span>Alphabet Song Coming Soon</span>
           </div>
@@ -227,7 +286,7 @@ const transformWord = () => {
           <CardHeader>
             <CardTitle className="text-white">Transcriber</CardTitle>
             <CardDescription className="text-blue-300/70">
-              Enter text to convert it to Meta Script notation
+              Enter text to convert it to Meta Script™ notation
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -261,8 +320,10 @@ const transformWord = () => {
                     <p className="text-white text-lg font-mono">{phoneticResult}</p>
                   </div>
                   <div className="p-4 rounded-lg bg-white/5 border border-white/10">
-                    <p className="text-sm text-blue-300/70 mb-2">Meta Script</p>
-                    <div className="text-white text-2xl font-mono tracking-wide">{result}</div>
+                    <p className="text-sm text-blue-300/70 mb-2">Meta Script™</p>
+                    <div className="text-white text-2xl font-mono tracking-wide">
+                      {result}
+                    </div>
                   </div>
                 </div>
               )}
@@ -274,7 +335,7 @@ const transformWord = () => {
           <CardHeader>
             <CardTitle className="text-white">Resources</CardTitle>
             <CardDescription className="text-blue-300/70">
-              Learn more about Meta Script notation
+              Learn more about Meta Script™ notation
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -296,14 +357,14 @@ const transformWord = () => {
                   </Button>
                 </div>
                 <p className="text-sm text-blue-300/70">
-                  Comprehensive guide explaining Meta Script notation, 
+                  Comprehensive guide explaining Meta Script™ notation, 
                   including examples and best practices.
                 </p>
               </div>
               <div className="p-4 rounded-lg bg-white/5 border border-white/10">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <AppleIcon className="w-5 h-5 text-blue-400" />
+                    <SmartphoneIcon className="w-5 h-5 text-blue-400" />
                     <h3 className="text-white font-medium">Add to Home Screen</h3>
                   </div>
                   <Button
@@ -317,7 +378,38 @@ const transformWord = () => {
                   </Button>
                 </div>
                 <p className="text-sm text-blue-300/70">
-                  Step-by-step guide on how to add Meta Script to your iPhone home screen for quick access.
+                  Step-by-step guide on how to add Meta Script™ to your iPhone home screen for quick access.
+                </p>
+              </div>
+              <div className="p-4 rounded-lg bg-white/5 border border-white/10">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <Puzzle className="w-5 h-5 text-blue-400" />
+                    <h3 className="text-white font-medium">Meta Script™ Scrabble</h3>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-blue-500/20 hover:border-blue-500/40 text-blue-400"
+                      onClick={handleDownloadScrabble}
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      3D Files
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-blue-500/20 hover:border-blue-500/40 text-blue-400"
+                      onClick={handleDownloadScrabbleGuidelines}
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Guidelines
+                    </Button>
+                  </div>
+                </div>
+                <p className="text-sm text-blue-300/70">
+                  Download 3D printer files for Meta Script™ Scrabble tiles (0.2mm nozzle, 0.1mm layer height) and game guidelines.
                 </p>
               </div>
             </div>
