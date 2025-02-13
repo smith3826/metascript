@@ -82,7 +82,7 @@ export default function Home() {
     'ɪŋk': 'EnK',
     'ɪɹ': 'Er',
     'ɔɹ': 'Or',
-    'ʊɹ': 'ʊr',
+    'ʊɹ': 'r',
 };
 
 const transformWord = () => {
