@@ -253,7 +253,7 @@ const transformWord = () => {
   };
   
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 p-4 lg:p-8">
+    <main className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 p-4 lg:p-8 w-screen overflow-x-hidden">
     <div className="max-w-5xl mx-auto">
       <div className="flex flex-col items-center justify-center mb-12">
         <div className="flex items-center gap-3 mb-2">
@@ -281,7 +281,7 @@ const transformWord = () => {
         </div>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 gap-2 md:gap-6">
         <Card className="bg-white/5 border-white/10">
           <CardHeader>
             <CardTitle className="text-white">Transcriber</CardTitle>
@@ -382,7 +382,7 @@ const transformWord = () => {
                 </p>
               </div>
               <div className="p-4 rounded-lg bg-white/5 border border-white/10">
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex flex-col md:flex-row items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <Puzzle className="w-5 h-5 text-blue-400" />
                     <h3 className="text-white font-medium">Meta Script™ Scrabble</h3>
