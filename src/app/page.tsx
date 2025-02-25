@@ -104,6 +104,7 @@ const transformWord = () => {
         if (phoneticValue !== '?') {
           // Remove stress marks and slashes
           let transformed = firstPhonetic.replace(/[ˈˌ\/]/g, '');
+          
           let currentIndex = 0;
           
           // Sort by length to handle multi-character symbols first (like 'dʒ')
@@ -137,6 +138,23 @@ const transformWord = () => {
           // convert t to T when preceeded by K
           transformed = transformed.replace(/Kt/g, 'KT');
 
+          // Add special handling for words ending in 'tion'
+          if (word.endsWith('tion')) {
+            transformed = transformed.slice(0, -3) + 'ʃiN';
+          }
+          // Add special handling for 5+ letter words ending in 'an'
+          if (word.length >= 5 && word.endsWith('an')) {
+            transformed = transformed.slice(0, -2) + 'iN';
+          }
+          // Add special handling for words ending in 'tten'
+          if (word.endsWith('tten')) {
+            transformed = transformed.slice(0, -3) + 'iN';
+          }
+          // Add special handling for words ending in 'le'
+          if (word.endsWith('le')) {
+            transformed = transformed.slice(0, -2) + 'ʊL';
+          }
+
           allResults.push(transformed);
 
         } else {
@@ -158,7 +176,7 @@ const transformWord = () => {
 
   const handleDownloadGuide = async () => {
     try {
-      const response = await fetch('/Meta_Script_Beta_.pdf');
+      const response = await fetch('/Meta_Script_v2.pdf');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -168,7 +186,7 @@ const transformWord = () => {
       
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'Meta Script™ Guide.pdf';
+      a.download = 'Meta Script™ Guide v2.pdf';
       document.body.appendChild(a);
       a.click();
       
@@ -344,7 +362,7 @@ const transformWord = () => {
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <Book className="w-5 h-5 text-blue-400" />
-                    <h3 className="text-white font-medium">User Guide</h3>
+                    <h3 className="text-white font-medium">User Guide v2</h3>
                   </div>
                   <Button
                     variant="outline"
@@ -353,7 +371,7 @@ const transformWord = () => {
                     onClick={handleDownloadGuide}
                   >
                     <Download className="w-4 h-4 mr-2" />
-                    Download
+                    Download v2
                   </Button>
                 </div>
                 <p className="text-sm text-blue-300/70">
